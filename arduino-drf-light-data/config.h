@@ -15,7 +15,7 @@ const char* update_keys[] = {
 int numChars = { 32 };
 char receivedChars[32];
 bool newData { false };
-
+//
 void read_data_with_markers() {
     static boolean recvInProgress = false;
     static byte ndx = 0;
