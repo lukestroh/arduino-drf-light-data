@@ -25,21 +25,18 @@
 
 class Eth {
     private:
+        // Ethernet
+        int num_clients {1};
+        EthernetClient lan_clients[1];
+
+    public:
         // Connection parameters
         uint8_t MAC[6] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
         uint8_t IP[4] = { 169, 254, 235, 10 };
         uint8_t DNS[4] = { 169, 254, 235, 35 };
         uint8_t GATEWAY[4] = { 169, 254, 235, 35 };
         uint8_t SUBNET[4] = { 255, 255, 0, 0 };
-
         
-        int num_clients {1};
-        EthernetClient lan_clients[1];
-
-        // Private Methods
-    
-
-    public:
         // Data buffer
         int numChars = 32;
         char receivedChars[32];

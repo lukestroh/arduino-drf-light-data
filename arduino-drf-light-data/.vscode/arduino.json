@@ -1,0 +1,7 @@
+{
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "port": "COM19",
+    "sketch": "arduino-drf-light-data.ino",
+    "output": "../build"
+}

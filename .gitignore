@@ -33,3 +33,7 @@
 
 # Secrets
 auth.h
+build
+
+# Python
+venv
