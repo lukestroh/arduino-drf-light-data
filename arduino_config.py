@@ -11,6 +11,9 @@ class ArduinoConfigUpdater():
     def __init__(self, port: str, baudrate: int) -> None:
         self.port = port
         self.BAUDRATE = baudrate
+        self.command_dict = {
+            "datetime": self.update_datetime()
+        }
         return
     
     def connect_to_arduino(self) -> None:
@@ -66,14 +69,19 @@ class ArduinoConfigUpdater():
 
         data = (start_marker + data + end_marker).encode()
         self.ser.write()
-
         return
 
+    def send_user_input(self) -> None:
+
+
+        return
 
 
 def main():
     acu = ArduinoConfigUpdater(port='com19', baudrate=115200)
     acu.connect_to_arduino()
+
+    # Perhaps send all the data? Make a JSON with all of the arguments?
     # acu.update_datetime()
 
 

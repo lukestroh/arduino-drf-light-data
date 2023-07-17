@@ -29,6 +29,9 @@ Eth eth0;
 // HTTP
 CustomHttp custom_http(eth0);
 
+// Config
+ArduinoConfig conf(eth0);
+
 
 /*********************************************************************************************
  * Main
@@ -68,11 +71,11 @@ void loop() {
 
     
     /* Read any new data */
-    read_data_with_markers();
+    conf.read_data_with_markers();
 
     /* Determine any configuration updates */
-    if (newData) {
-        edit_params(receivedChars);
-        newData = false;
+    if (conf.newData) {
+        conf.edit_params(conf.receivedChars);
+        conf.newData = false;
     }
 }

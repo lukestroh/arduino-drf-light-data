@@ -11,9 +11,9 @@ Eth::Eth():
     /* Initialize class variables */
     lan_server_ip(169, 254, 235, 35),
     lan_server_port {8000},
-    local_server_port {10002},
-    local_client(),
-    local_server(local_server_port)
+    ard_server_port {10002},
+    ard_client(),
+    ard_server(ard_server_port)
 {
 
 }
@@ -51,13 +51,13 @@ void Eth::begin_ethernet() {
 
 
 void Eth::begin_server() {
-    local_server.begin();
+    ard_server.begin();
 }
 
-bool Eth::connect_local_client() {
-    if (!local_client.connected()) {
+bool Eth::connect_ard_client() {
+    if (!ard_client.connected()) {
 
-        if (local_client.connect(lan_server_ip, lan_server_port) == 1) {
+        if (ard_client.connect(lan_server_ip, lan_server_port) == 1) {
 #if DEBUG
             Serial.println(F("Connected to host.\n"));
 #endif // DEBUG
@@ -73,7 +73,7 @@ bool Eth::connect_local_client() {
     Ethernet.maintain();
 
     // Check if connected after connection attempt. Maybe just check in loop?
-    if (local_client.connected()) {
+    if (ard_client.connected()) {
         return true;
     } else {
         return false;
@@ -82,7 +82,7 @@ bool Eth::connect_local_client() {
 
 void Eth::accept_clients() {
     /* Add new clients to client list */
-    EthernetClient new_client = local_server.accept();
+    EthernetClient new_client = ard_server.accept();
 #if DEBUG
         Serial.print(F("Got new client: "));
         Serial.println(new_client);
@@ -140,12 +140,12 @@ void Eth::read_data() { // need to make this the server, not the client
 
 void Eth::send_data(char* data) {
     /* Send a char array via TCP */
-    local_client.println(data);
+    ard_client.println(data);
 }
 
 void Eth::send_data(float f) {
     /* Send a float via TCP */
     char send_buffer[13];
     dtostrf(f, 10, 10, send_buffer);
-    local_client.println(send_buffer);
+    ard_client.println(send_buffer);
 }

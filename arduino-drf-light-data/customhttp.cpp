@@ -8,7 +8,7 @@ char json_output_buf[128];
 
 CustomHttp::CustomHttp(Eth& eth0): 
     /* Initialize class variables*/
-    http(eth0.local_client, eth0.lan_server_ip, eth0.lan_server_port)
+    http(eth0.ard_client, eth0.lan_server_ip, eth0.lan_server_port)
 { 
 
 }

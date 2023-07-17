@@ -1,17 +1,3 @@
-/*
-    Header file for custom ethernet class
-    Author: Luke Strohbehn
-    Date: 4/17/2023
-
-    Robots' ip addresses: 
-        Joe's UR5 ip address: 169.254.174.50 
-        Cindy's UR5 ip address: 169.254.177.232
-
-    Host pc's ip addresses: 
-        Desktop : 169.254.133.21 
-        Laptop : 169.254.177.231
-*/
-
 #ifndef ETHTCP_H
 #define ETHTCP_H
 
@@ -41,13 +27,13 @@ class Eth {
         int numChars = 32;
         char receivedChars[32];
         bool newData = false;
-        EthernetClient local_client;
-        EthernetServer local_server;
+        EthernetClient ard_client;
+        EthernetServer ard_server;
 
-        // Server address, port, client
+        // Server address, port
         IPAddress lan_server_ip;
-        const int lan_server_port;
-        const int local_server_port;
+        int lan_server_port;
+        int ard_server_port;
         
         // Class declaration
         Eth();
@@ -55,7 +41,7 @@ class Eth {
         // Public Methods
         void begin_ethernet();
         void begin_server();
-        bool connect_local_client();
+        bool connect_ard_client();
 
         // Server
         void accept_clients();
