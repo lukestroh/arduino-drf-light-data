@@ -1,24 +1,22 @@
-/*
-    Light Controller DRF Connector
-    Author: Luke Strohbehn+
-*/
+#include <Arduino.h>
+
 #define DEBUG 1
 #define LED 0
 
 #include "EthTCP.h"
-#include "customswitch.h"
-#include "customhttp.h"
 #include "config.h"
+#include "customhttp.h"
+#include "customswitch.h"
 #include <DS3231.h>
 
 // Switches
-uint8_t switch_pin0 {2};
+uint8_t switch_pin0 { 2 };
 CustomSwitch switch0(switch_pin0);
 
 // Lights
-uint8_t pin_light0 {8};
-uint8_t pwm_light0 {255};
-bool pin_status {false};
+uint8_t pin_light0 { 8 };
+uint8_t pwm_light0 { 255 };
+bool pin_status { false };
 
 // RTC
 DS3231 rtc;
@@ -31,7 +29,6 @@ CustomHttp custom_http(eth0);
 
 // Config
 ArduinoConfig conf(eth0);
-
 
 /*********************************************************************************************
  * Main
@@ -56,8 +53,7 @@ void loop() {
                 pwm_light0 = 0;
             }
             analogWrite(pin_light0, pwm_light0);
-        }
-        else {
+        } else {
             pwm_light0 = 0;
             pin_status = true - pin_status;
             digitalWrite(pin_light0, !pin_status);
@@ -68,8 +64,6 @@ void loop() {
         custom_http.post_http_msg();
     }
 
-
-    
     /* Read any new data */
     conf.read_data_with_markers();
 

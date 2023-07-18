@@ -61,9 +61,9 @@ void ArduinoConfig::update_gateway_ip(const char* gateway_ip) { /* Update the Et
 }
 
 void ArduinoConfig::update_param(const char* key, const char* value) {
-    if (key == "datetime") {
+    if (strmcp(key, "datetime") == 0) {
         update_datetime(value);
-    } else if (key == "server_ip") {
+    } else if (strmcp(key, "server_ip") == 0) {
         update_server_ip(value);
     } else if (key == "port") {
         update_server_port(value);
