@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include "EthTCP.h"
+#include <DS3231.h>
 #include <Arduino.h>
 
 class ArduinoConfig {
@@ -12,6 +13,9 @@ class ArduinoConfig {
         // Eth0 client
         Eth client;
 
+        // RTC
+        DS3231 rtc;
+
         // Private methods
         void update_datetime(const char* datetime);
         void update_server_ip(const char* server_ip);
@@ -19,15 +23,15 @@ class ArduinoConfig {
         void update_client_ip(const char* client_ip);
         void update_gateway_ip(const char* gateway_ip);
         void update_param(const char* key, const char* value);
-
+        uint8_t* get_octect_int(const char* address);
     public:
         // Receive data buffer
-        int numChars = { 32 };
-        char receivedChars[32];
+        int numChars = { 64 };
+        char receivedChars[64];
         bool newData { false };
 
         // Constructor
-        ArduinoConfig(Eth&);
+        ArduinoConfig(Eth&, DS3231&);
 
         // Public methods
         void read_data_with_markers();

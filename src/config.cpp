@@ -1,8 +1,10 @@
 #include "config.h"
 #include <ArduinoJson.h>
 
-ArduinoConfig::ArduinoConfig(Eth& eth0):
-    client(eth0)
+
+ArduinoConfig::ArduinoConfig(Eth& eth0, DS3231& ds3231):
+    client(eth0),
+    rtc(ds3231)
 {
 
 }
@@ -36,13 +38,40 @@ void ArduinoConfig::read_data_with_markers() {
     }
 }
 
-void ArduinoConfig::update_datetime(const char* datetime) { /* Update the RTC current time */
+uint8_t* ArduinoConfig::get_octect_int(const char* address) {
+    /* Make an array of octets from a string */
+    // make a char* version of the ip address for 'strtok()' function
+    char address_cpy[strlen(address)];
+    strcpy(address_cpy, address);
+    const char delim[2] = ".";
+    char* token;
+    token = strtok(address_cpy, delim);
+    static uint8_t octs[4];
+    uint8_t i = 0;
+    while (token != nullptr) {
+        octs[i] = atoi(token);
+        token = strtok(nullptr, delim);
+        ++i;
+    }
+    return octs;
+}
+
+void ArduinoConfig::update_datetime(const char* datetime) {
+    /* Update the RTC current time */
+    
 }
 
 void ArduinoConfig::update_server_ip(const char* server_ip) {
     /* Update the server IP address */
-    // Parse cstr for octets
-    // http://www.tutorialspoint.com/c_standard_library/c_function_strtok.htm
+    Serial.print(F("Previous server IP: "));
+    Serial.println(client.lan_server_ip);
+    
+    uint8_t* octs = get_octect_int(server_ip);
+
+    client.lan_server_ip = IPAddress(octs[0], octs[1], octs[2], octs[3]);
+
+    Serial.print(F("Updated server IP: "));
+    Serial.println(client.lan_server_ip);
 
     // Reconnect eth0
     client.begin_ethernet();
@@ -52,31 +81,63 @@ void ArduinoConfig::update_server_port(const char* port_cstr) {
     /* Update the server port number */
     int port = atoi(port_cstr);
     client.lan_server_port = port;
+#if DEBUG
+    Serial.print(F("LAN server port updated: "));
+    Serial.print(client.lan_server_ip);
+    Serial.print(F(":"));
+    Serial.println(client.lan_server_port);
+#endif // DEBUG
 }
 
-void ArduinoConfig::update_client_ip(const char* client_ip) { /* Update the Arduino's IP address */
+void ArduinoConfig::update_client_ip(const char* client_ip) {
+    /* Update the Arduino's IP address */
+    uint8_t* octs = get_octect_int(client_ip);
+    client.IP[0] = octs[0];
+    client.IP[1] = octs[1];
+    client.IP[2] = octs[2];
+    client.IP[3] = octs[3];
+
+// #if DEBUG
+//     Serial.print(F("Arduino IP address updated: "));
+//     Serial.print(client.lan_server_ip);
+//     Serial.print(F(":"));
+//     Serial.println(client.lan_server_port);
+// #endif // DEBUG
+
+    // Reconnect eth0
+    client.begin_ethernet();
 }
 
-void ArduinoConfig::update_gateway_ip(const char* gateway_ip) { /* Update the Eth gateway and DNS IP addresses */
+void ArduinoConfig::update_gateway_ip(const char* gateway_ip) {
+    /* Update the Eth gateway and DNS IP addresses */
+    uint8_t* octs = get_octect_int(gateway_ip);
+    client.GATEWAY[0] = client.DNS[0] = octs[0];
+    client.GATEWAY[1] = client.DNS[1] = octs[1];
+    client.GATEWAY[2] = client.DNS[2] = octs[2];
+    client.GATEWAY[3] = client.DNS[3] = octs[3];
+
+    // Reconnect eth0
+    client.begin_ethernet();
 }
 
 void ArduinoConfig::update_param(const char* key, const char* value) {
-    if (strmcp(key, "datetime") == 0) {
+    /* Specify which parameter to update */
+    if (strcmp(key, "datetime") == 0) {
         update_datetime(value);
-    } else if (strmcp(key, "server_ip") == 0) {
+    } else if (strcmp(key, "server_ip") == 0) {
         update_server_ip(value);
-    } else if (key == "port") {
+    } else if (strcmp(key, "port") == 0) {
         update_server_port(value);
-    } else if (key == "client_ip") {
+    } else if (strcmp(key, "client_ip") == 0) {
         update_client_ip(value);
-    } else if (key == "gateway_ip") {
+    } else if (strcmp(key, "gateway_ip") == 0) {
         update_gateway_ip(value);
     }
 }
 
 void ArduinoConfig::edit_params(const char* serial_data) {
     /* Determine what parameter to set up for editing the Arduino parameters */
-    const int json_post_capacity { JSON_OBJECT_SIZE(1) };
+    const int json_post_capacity { JSON_OBJECT_SIZE(16) };
     StaticJsonDocument<json_post_capacity> doc_from_serial;
     DeserializationError err = deserializeJson(doc_from_serial, serial_data);
 
@@ -90,6 +151,7 @@ void ArduinoConfig::edit_params(const char* serial_data) {
 
     // Get JsonObject to determine key and value pair
     JsonObject jobj = doc_from_serial.as<JsonObject>();
+
     for (auto key : update_keys) {
         const char* error = jobj[key];
         if (error != nullptr) {

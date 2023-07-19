@@ -28,7 +28,7 @@ Eth eth0;
 CustomHttp custom_http(eth0);
 
 // Config
-ArduinoConfig conf(eth0);
+ArduinoConfig conf(eth0, rtc);
 
 /*********************************************************************************************
  * Main
@@ -69,6 +69,7 @@ void loop() {
 
     /* Determine any configuration updates */
     if (conf.newData) {
+        Serial.println(conf.receivedChars);
         conf.edit_params(conf.receivedChars);
         conf.newData = false;
     }
