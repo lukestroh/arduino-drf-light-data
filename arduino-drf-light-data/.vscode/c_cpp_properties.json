@@ -1,0 +1,64 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/include",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/src",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/DS3231",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/Ethernet/src",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/ArduinoHttpClient/src",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/ArduinoJson/src",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/variants/mega",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/include",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/src",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/DS3231",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/Ethernet/src",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/ArduinoHttpClient/src",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/ArduinoJson/src",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60109",
+                "ARDUINO_AVR_MEGA2560",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/lukes/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
