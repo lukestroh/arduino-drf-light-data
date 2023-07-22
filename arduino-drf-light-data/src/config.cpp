@@ -1,8 +1,12 @@
 #include "config.h"
 #include <ArduinoJson.h>
+#include <RTClib.h>
 
+// #ifndef SERIAL_DEBUG
+// #define SERIAL_DEBUG 1
+// #endif // SERIAL_DEBUG
 
-ArduinoConfig::ArduinoConfig(Eth& eth0, DS3231& ds3231):
+ArduinoConfig::ArduinoConfig(Eth& eth0, RTC_DS3231& ds3231):
     client(eth0),
     rtc(ds3231)
 {
@@ -40,9 +44,8 @@ void ArduinoConfig::read_data_with_markers() {
 
 uint8_t* ArduinoConfig::get_octect_int(const char* address) {
     /* Make an array of octets from a string */
-    // make a char* version of the ip address for 'strtok()' function
     char address_cpy[strlen(address)];
-    strcpy(address_cpy, address);
+    strcpy(address_cpy, address); // make a char* version of the ip address for 'strtok()' function
     const char delim[2] = ".";
     char* token;
     token = strtok(address_cpy, delim);
@@ -59,19 +62,33 @@ uint8_t* ArduinoConfig::get_octect_int(const char* address) {
 void ArduinoConfig::update_datetime(const char* datetime) {
     /* Update the RTC current time */
     
+    DateTime dt = DateTime(datetime);
+    rtc.adjust(dt);
+    
+#if SERIAL_DEBUG
+    char buffer[32] = "YYYY-MM-DDThh:mm:ss";
+    Serial.print(F("Datetime updated: "));
+    DateTime now_dt = rtc.now();
+    now_dt.toString(buffer);    
+    Serial.println(buffer);
+#endif // SERIAL_DEBUG
 }
 
 void ArduinoConfig::update_server_ip(const char* server_ip) {
     /* Update the server IP address */
-    Serial.print(F("Previous server IP: "));
-    Serial.println(client.lan_server_ip);
-    
+// #if SERIAL_DEBUG
+//     Serial.print(F("Previous server IP: "));
+//     Serial.println(client.lan_server_ip);
+// #endif // SERIAL_DEBUG
+
     uint8_t* octs = get_octect_int(server_ip);
 
     client.lan_server_ip = IPAddress(octs[0], octs[1], octs[2], octs[3]);
 
-    Serial.print(F("Updated server IP: "));
-    Serial.println(client.lan_server_ip);
+// #if SERIAL_DEBUG
+//     Serial.print(F("Updated server IP: "));
+//     Serial.println(client.lan_server_ip);
+// #endif // SERIAL_DEBUG
 
     // Reconnect eth0
     client.begin_ethernet();
@@ -81,12 +98,12 @@ void ArduinoConfig::update_server_port(const char* port_cstr) {
     /* Update the server port number */
     int port = atoi(port_cstr);
     client.lan_server_port = port;
-#if DEBUG
+#if SERIAL_DEBUG
     Serial.print(F("LAN server port updated: "));
     Serial.print(client.lan_server_ip);
     Serial.print(F(":"));
     Serial.println(client.lan_server_port);
-#endif // DEBUG
+#endif // SERIAL_DEBUG
 }
 
 void ArduinoConfig::update_client_ip(const char* client_ip) {
@@ -97,12 +114,12 @@ void ArduinoConfig::update_client_ip(const char* client_ip) {
     client.IP[2] = octs[2];
     client.IP[3] = octs[3];
 
-// #if DEBUG
+// #if SERIAL_DEBUG
 //     Serial.print(F("Arduino IP address updated: "));
 //     Serial.print(client.lan_server_ip);
 //     Serial.print(F(":"));
 //     Serial.println(client.lan_server_port);
-// #endif // DEBUG
+// #endif // SERIAL_DEBUG
 
     // Reconnect eth0
     client.begin_ethernet();
@@ -141,11 +158,12 @@ void ArduinoConfig::edit_params(const char* serial_data) {
     StaticJsonDocument<json_post_capacity> doc_from_serial;
     DeserializationError err = deserializeJson(doc_from_serial, serial_data);
 
+    // If there is an error, quit the function
     if (err) {
-#if DEBUG
+#if SERIAL_DEBUG
         Serial.print(F("deserializeJson failed with code: "));
         Serial.println(err.f_str());
-#endif // DEBUG
+#endif // SERIAL_DEBUG
         return;
     }
 

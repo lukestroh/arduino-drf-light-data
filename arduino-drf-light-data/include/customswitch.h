@@ -31,6 +31,7 @@ class CustomSwitch {
         static void switch_pressed_1();
         
     public:
+        CustomSwitch();
         CustomSwitch(const uint8_t pin);
         bool read_switch();
 

@@ -3,7 +3,6 @@
 
 #include "EthTCP.h"
 #include <ArduinoHttpClient.h>
-#include <DS3231.h>
 
 class CustomHttp {
     private:
@@ -12,7 +11,7 @@ class CustomHttp {
         HttpClient http;     
 
     public:
-        // CustomHttp();
+        CustomHttp();
         CustomHttp(Eth&);
         void construct_json_doc(bool pin_status, uint8_t light_pwm);
         void post_http_msg();

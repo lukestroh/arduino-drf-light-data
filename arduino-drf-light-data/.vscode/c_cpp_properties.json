@@ -10,7 +10,8 @@
             "includePath": [
                 "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/include",
                 "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/src",
-                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/DS3231",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/RTClib/src",
+                "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/Adafruit BusIO",
                 "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/Ethernet/src",
                 "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
@@ -28,7 +29,8 @@
                 "path": [
                     "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/include",
                     "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/src",
-                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/DS3231",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/RTClib/src",
+                    "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/Adafruit BusIO",
                     "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     "c:/Users/lukes/Documents/PlatformIO/Projects/djangorestframework-arduino/arduino-drf-light-data/.pio/libdeps/megaatmega2560/Ethernet/src",
                     "C:/Users/lukes/.platformio/packages/framework-arduino-avr/libraries/SPI/src",

@@ -1,8 +1,12 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#ifndef SERIAL_DEBUG
+#define SERIAL_DEBUG 1
+#endif // SERIAL_DEBUG
+
 #include "EthTCP.h"
-#include <DS3231.h>
+#include <RTClib.h>
 #include <Arduino.h>
 
 class ArduinoConfig {
@@ -14,7 +18,7 @@ class ArduinoConfig {
         Eth client;
 
         // RTC
-        DS3231 rtc;
+        RTC_DS3231 rtc;
 
         // Private methods
         void update_datetime(const char* datetime);
@@ -31,7 +35,8 @@ class ArduinoConfig {
         bool newData { false };
 
         // Constructor
-        ArduinoConfig(Eth&, DS3231&);
+        ArduinoConfig();
+        ArduinoConfig(Eth&, RTC_DS3231&);
 
         // Public methods
         void read_data_with_markers();

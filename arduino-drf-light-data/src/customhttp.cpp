@@ -38,14 +38,14 @@ void CustomHttp::post_http_msg() {
     http.print(json_output_buf);
     http.endRequest();
 
-#if DEBUG
+#if SERIAL_DEBUG
     uint16_t http_status_code = http.responseStatusCode();
     String resp = http.responseBody();
     Serial.print(F("Status code: "));
     Serial.println(http_status_code);
     Serial.print(F("Response: "));
     Serial.println(resp);
-#endif // DEBUG
+#endif // SERIAL_DEBUG
 
     http.stop();
 }

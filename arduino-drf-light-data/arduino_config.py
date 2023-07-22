@@ -28,7 +28,7 @@ class ArduinoConfigUpdater():
     
     def update_datetime(self) -> None:
         """ Update the datetime on the Arduino using the current time """
-        datetime_dict = {"datetime": dt.datetime.now().strftime(r"%Y%m%d-%H:%M:%S.%f")}
+        datetime_dict = {"datetime": dt.datetime.now().strftime(r"%Y-%m-%dT%H:%M:%S.%f")} # ISO 8601 datetime format for RTClib
         datetime_json = json.dumps(datetime_dict)
         print(datetime_json)
         self.send_data(datetime_json)
@@ -49,7 +49,7 @@ class ArduinoConfigUpdater():
         return
 
     def update_client_ip(self, client_ip: str) -> None:
-        """ Update the IP address of the Arduino"""
+        """ Update the IP address of the Arduino """
         client_ip_dict = {"client_ip": client_ip}
         client_ip_json = json.dumps(client_ip_dict)
         self.send_data(client_ip_json)
@@ -71,7 +71,7 @@ class ArduinoConfigUpdater():
         self.ser.write()
         return
 
-    def send_user_input(self) -> None:
+    def get_user_input(self) -> None:
 
 
         return
@@ -82,8 +82,7 @@ def main():
     acu.connect_to_arduino()
 
     # Perhaps send all the data? Make a JSON with all of the arguments?
-    # acu.update_datetime()
-
+    acu.update_datetime()
 
     return
 

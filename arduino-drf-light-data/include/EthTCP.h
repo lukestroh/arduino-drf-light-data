@@ -1,8 +1,8 @@
 #ifndef ETHTCP_H
 #define ETHTCP_H
 
-#ifndef DEBUG
-#define DEBUG 0
+#ifndef SERIAL_DEBUG
+#define SERIAL_DEBUG 1
 #endif
 
 #include <stdint.h>
@@ -27,14 +27,17 @@ class Eth {
         int numChars = 32;
         char receivedChars[32];
         bool newData = false;
-        EthernetClient ard_client;
-        EthernetServer ard_server;
+        
 
         // Server address, port
         IPAddress lan_server_ip;
         int lan_server_port;
         int ard_server_port;
-        
+
+        // Client, server
+        EthernetClient ard_client;
+        EthernetServer ard_server;
+
         // Class declaration
         Eth();
 

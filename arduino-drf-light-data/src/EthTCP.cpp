@@ -26,7 +26,7 @@ void Eth::begin_ethernet() {
     */
     Ethernet.begin(MAC, IP, DNS, GATEWAY, SUBNET);
 
-#if DEBUG
+#if SERIAL_DEBUG
     // Check for hardware errors
     if (static_cast<int>(Ethernet.hardwareStatus()) == static_cast<int>(EthernetNoHardware)) {
         Serial.println(F("ERROR: Ethernet shield was not found."));
@@ -36,17 +36,17 @@ void Eth::begin_ethernet() {
         Serial.println(F("ERROR: Ethernet cable is not connected."));
     }
 
-
     Serial.println(F("Network information:"));
     Serial.print(F("IPv4 Address: "));
     Serial.println(Ethernet.localIP());
-    Serial.println(F("Gateway: "));
+    Serial.print(F("Gateway: "));
     Serial.println(Ethernet.gatewayIP());
     Serial.print(F("Subnet mask: "));
     Serial.println(Ethernet.subnetMask());
     Serial.print(F("DNS Server: "));
     Serial.println(Ethernet.dnsServerIP());
-#endif // DEBUG
+    Serial.println();
+#endif // SERIAL_DEBUG
 }
 
 
@@ -56,17 +56,16 @@ void Eth::begin_server() {
 
 bool Eth::connect_ard_client() {
     if (!ard_client.connected()) {
-
         if (ard_client.connect(lan_server_ip, lan_server_port) == 1) {
-#if DEBUG
+#if SERIAL_DEBUG
             Serial.println(F("Connected to host.\n"));
-#endif // DEBUG
+#endif // SERIAL_DEBUG
         }
-#if DEBUG
+#if SERIAL_DEBUG
         else {
             Serial.println(F("Connection to host failed.\n"));
         }
-#endif // DEBUG
+#endif // SERIAL_DEBUG
     }
 
     // `maintain()` must be frequently called to maintain DHCP lease for the given IP address
@@ -83,10 +82,10 @@ bool Eth::connect_ard_client() {
 void Eth::accept_clients() {
     /* Add new clients to client list */
     EthernetClient new_client = ard_server.accept();
-#if DEBUG
+#if SERIAL_DEBUG
         Serial.print(F("Got new client: "));
         Serial.println(new_client);
-#endif // DEBUG
+#endif // SERIAL_DEBUG
     if (new_client) {
         for (uint8_t i=0; i<num_clients; ++i) {
             if (!lan_clients[i]) {
