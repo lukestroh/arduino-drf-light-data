@@ -84,12 +84,6 @@ void loop() {
 #endif // SERIAL_DEBUG
         conf.edit_params(conf.receivedChars);
         conf.newData = false;
-
-// #if SERIAL_DEBUG
-//         Serial.print(F("Ethernet update: "));
-//         Serial.println(eth0.lan_server_ip);
-// #endif // SERIAL_DEBUG
-        Serial.println(eth0.IP[3]);
     }
 
 }

@@ -1,10 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#ifndef SERIAL_DEBUG
-#define SERIAL_DEBUG 1
-#endif // SERIAL_DEBUG
-
 #include "EthTCP.h"
 #include <RTClib.h>
 #include <Arduino.h>
@@ -15,10 +11,10 @@ class ArduinoConfig {
         const char* update_keys[5] = { "datetime", "server_ip", "port", "client_ip", "gateway_ip" };
 
         // Eth0 client
-        Eth client;
+        Eth& client;
 
         // RTC
-        RTC_DS3231 rtc;
+        RTC_DS3231& rtc;
 
         // Private methods
         void update_datetime(const char* datetime);
@@ -28,6 +24,7 @@ class ArduinoConfig {
         void update_gateway_ip(const char* gateway_ip);
         void update_param(const char* key, const char* value);
         uint8_t* get_octect_int(const char* address);
+
     public:
         // Receive data buffer
         int numChars = { 64 };

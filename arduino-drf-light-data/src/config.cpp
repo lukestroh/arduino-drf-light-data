@@ -2,9 +2,9 @@
 #include <ArduinoJson.h>
 #include <RTClib.h>
 
-// #ifndef SERIAL_DEBUG
-// #define SERIAL_DEBUG 1
-// #endif // SERIAL_DEBUG
+#ifndef SERIAL_DEBUG
+#define SERIAL_DEBUG 1
+#endif // SERIAL_DEBUG
 
 ArduinoConfig::ArduinoConfig(Eth& eth0, RTC_DS3231& ds3231):
     client(eth0),
@@ -76,22 +76,16 @@ void ArduinoConfig::update_datetime(const char* datetime) {
 
 void ArduinoConfig::update_server_ip(const char* server_ip) {
     /* Update the server IP address */
-// #if SERIAL_DEBUG
-//     Serial.print(F("Previous server IP: "));
-//     Serial.println(client.lan_server_ip);
-// #endif // SERIAL_DEBUG
-
     uint8_t* octs = get_octect_int(server_ip);
 
     client.lan_server_ip = IPAddress(octs[0], octs[1], octs[2], octs[3]);
 
-// #if SERIAL_DEBUG
-//     Serial.print(F("Updated server IP: "));
-//     Serial.println(client.lan_server_ip);
-// #endif // SERIAL_DEBUG
-
-    // Reconnect eth0
-    client.begin_ethernet();
+#if SERIAL_DEBUG
+    Serial.print(F("Server IP Address updated: "));
+    Serial.print(client.lan_server_ip);
+    Serial.print(F(":"));
+    Serial.println(client.lan_server_port);
+#endif // SERIAL_DEBUG
 }
 
 void ArduinoConfig::update_server_port(const char* port_cstr) {
