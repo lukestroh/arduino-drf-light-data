@@ -53,9 +53,20 @@ uint8_t* ArduinoConfig::get_octect_int(const char* address) {
     uint8_t i = 0;
     while (token != nullptr) {
         octs[i] = atoi(token);
+        // check to see if octet is a valid number
+        if (octs[i] > 255 || octs[i] < 0) {
+#if SERIAL_DEBUG
+            Serial.print(F("Invalid octet value for IP address: "));
+            Serial.println(octs[i]);
+#endif // SERIAL_DEBUG
+            break;
+        }
         token = strtok(nullptr, delim);
         ++i;
     }
+
+    // Do additional error checking?
+    
     return octs;
 }
 
@@ -108,15 +119,10 @@ void ArduinoConfig::update_client_ip(const char* client_ip) {
     client.IP[2] = octs[2];
     client.IP[3] = octs[3];
 
-// #if SERIAL_DEBUG
-//     Serial.print(F("Arduino IP address updated: "));
-//     Serial.print(client.lan_server_ip);
-//     Serial.print(F(":"));
-//     Serial.println(client.lan_server_port);
-// #endif // SERIAL_DEBUG
-
     // Reconnect eth0
     client.begin_ethernet();
+
+    // POST update to 'mcus'
 }
 
 void ArduinoConfig::update_gateway_ip(const char* gateway_ip) {
@@ -143,6 +149,10 @@ void ArduinoConfig::update_param(const char* key, const char* value) {
         update_client_ip(value);
     } else if (strcmp(key, "gateway_ip") == 0) {
         update_gateway_ip(value);
+    } else {
+#if SERIAL_DEBUG
+        Serial.println(F("JSON key did not match any configuration parameters"));
+#endif // SERIAL_DEBUG
     }
 }
 
