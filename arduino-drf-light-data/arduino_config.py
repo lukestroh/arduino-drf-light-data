@@ -4,6 +4,7 @@ arduino_config.py
 
 import serial
 import json
+import ipaddress
 import datetime as dt
 import sys
 
@@ -36,27 +37,45 @@ class ArduinoConfigUpdater():
 
     def update_server_ip(self, server_ip: str) -> None:
         """ Update the IP address of the server (Django)"""
+        server_ip = server_ip.strip()
         server_ip_dict = {"server_ip": server_ip}
+        try:
+            ipaddress.ip_address(server_ip)
+        except ValueError as e:
+            print(f"{e}. Please try again.")
+            return
         server_ip_json = json.dumps(server_ip_dict)
         self.send_data(server_ip_json)
         return
 
     def update_server_port(self, port: str) -> None:
         """ Update the por of the server """
-        port_dict = {"port": port}
+        port_dict = {"port": port.strip()}
         port_json = json.dumps(port_dict)
         self.send_data(port_json)
         return
 
     def update_client_ip(self, client_ip: str) -> None:
         """ Update the IP address of the Arduino """
+        client_ip = client_ip.strip()
         client_ip_dict = {"client_ip": client_ip}
+        try:
+            ipaddress.ip_address(client_ip)
+        except ValueError as e:
+            print(f"{e}. Please try again.")
+            return
         client_ip_json = json.dumps(client_ip_dict)
         self.send_data(client_ip_json)
         return
 
     def update_gateway_ip(self, gateway_ip: str) -> None:
         """ Update the IP address of the gateway and DNS """
+        gateway_ip = gateway_ip.strip()
+        try:
+            ipaddress.ip_address(gateway_ip)
+        except ValueError as e:
+            print(f"{e}. Please try again.")
+            return
         gateway_ip_dict = {"gateway_ip": gateway_ip}
         gateway_ip_json = json.dumps(gateway_ip_dict)
         self.send_data(gateway_ip_json)

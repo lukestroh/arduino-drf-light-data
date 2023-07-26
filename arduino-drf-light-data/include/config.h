@@ -38,7 +38,6 @@ class ArduinoConfig {
         // Public methods
         void read_data_with_markers();
         void edit_params(const char* serial_data);
-
 };
 
 

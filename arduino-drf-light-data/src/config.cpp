@@ -83,6 +83,7 @@ void ArduinoConfig::update_datetime(const char* datetime) {
     now_dt.toString(buffer);    
     Serial.println(buffer);
 #endif // SERIAL_DEBUG
+
 }
 
 void ArduinoConfig::update_server_ip(const char* server_ip) {
