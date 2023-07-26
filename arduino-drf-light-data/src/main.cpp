@@ -30,7 +30,7 @@ RTC_DS3231 rtc;
 Eth eth0;
 
 // HTTP
-CustomHttp custom_http(eth0);
+CustomHttp custom_http(eth0, rtc);
 
 // Config
 ArduinoConfig conf(eth0, rtc);
@@ -70,7 +70,7 @@ void loop() {
         }
 
         // Send data to DB
-        custom_http.construct_json_doc(pin_status, pwm_light0);
+        custom_http.construct_json_data_doc(pin_status, pwm_light0);
         custom_http.post_http_msg();
     }
 
