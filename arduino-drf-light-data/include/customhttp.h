@@ -7,6 +7,13 @@
 
 class CustomHttp {
     private:
+        // URLS
+        char* lightdata_url = "/api/lightdata";
+        char* mcu_update_url = "/api/mcus"
+
+        // Eth
+        Eth& eth0;
+
         // HTTP client
         char user_agent[16] = "Arduino/Mega";
         HttpClient http;
@@ -15,15 +22,13 @@ class CustomHttp {
         RTC_DS3231& rtc;
 
 
+
     public:
         CustomHttp();
-        CustomHttp(Eth&);
-        void construct_json_data_doc(bool pin_status, uint8_t light_pwm);
-        void construct_json_mcu_doc(const char* device_id, const char* ip_address);
-        void post_http_msg();
-        void put_http_msg();
-
-
+        CustomHttp(Eth& _eth0, RTC_DS3231& _rtc);
+        void construct_lightdata_json(bool pin_status, uint8_t light_pwm);
+        void construct_mcu_json(const char* device_id, const char* ip_address);
+        void send_http_msg(const char* method, const char* url, bool lightdata=false, bool mcu_update=false);
 };
 
 

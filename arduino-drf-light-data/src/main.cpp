@@ -70,8 +70,8 @@ void loop() {
         }
 
         // Send data to DB
-        custom_http.construct_json_data_doc(pin_status, pwm_light0);
-        custom_http.post_http_msg();
+        custom_http.construct_lightdata_json(pin_status, pwm_light0);
+        custom_http.send_http_msg("post", "/api/lightdata", true, false);
     }
 
     // Read any new data

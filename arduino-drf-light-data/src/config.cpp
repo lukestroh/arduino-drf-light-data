@@ -1,3 +1,4 @@
+#include "location_params.h"
 #include "config.h"
 #include <ArduinoJson.h>
 #include <RTClib.h>
@@ -175,10 +176,18 @@ void ArduinoConfig::edit_params(const char* serial_data) {
     // Get JsonObject to determine key and value pair
     JsonObject jobj = doc_from_serial.as<JsonObject>();
 
-    for (auto key : update_keys) {
+    for (auto key : lightdata_update_keys) {
         const char* error = jobj[key];
         if (error != nullptr) {
             update_param(key, jobj[key].as<const char*>());
         }
     }
+}
+
+void ArduinoConfig::update_device_location(const char* location) {
+    
+}
+
+void ArduinoConfig::update_device_name_and_id(const char* device_name, const char* device_id) {
+
 }

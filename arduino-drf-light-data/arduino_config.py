@@ -80,6 +80,12 @@ class ArduinoConfigUpdater():
         gateway_ip_json = json.dumps(gateway_ip_dict)
         self.send_data(gateway_ip_json)
         return
+    
+    def update_device_location(self, location: str) -> None:
+        return
+    
+    def update_device_name_and_id(self, name: str, id: str) -> None:
+        return
 
     def send_data(self, data: str) -> None:
         """ Send the data via Serial to the Arduino in JSON format """
@@ -88,6 +94,10 @@ class ArduinoConfigUpdater():
 
         data = (start_marker + data + end_marker).encode()
         self.ser.write()
+        return
+    
+    def get_device_resp():
+        
         return
 
     def get_user_input(self) -> None:
