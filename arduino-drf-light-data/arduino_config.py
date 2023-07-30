@@ -1,5 +1,6 @@
 """
 arduino_config.py
+Author: Luke Strohbehn
 """
 
 import serial
@@ -84,24 +85,33 @@ class ArduinoConfigUpdater():
     def update_device_location(self, location: str) -> None:
         return
     
-    def update_device_name_and_id(self, name: str, id: str) -> None:
+    def update_device_name(self, name: str, _id: str = None) -> None:
+        name = name.strip()
+        _id = _id.strip()
+        name_id_dict = {"device_name": name, "device_id": _id}
+        name_id_json = json.dumps(name_id_dict)
+        self.send_data(name_id_json)
         return
 
     def send_data(self, data: str) -> None:
-        """ Send the data via Serial to the Arduino in JSON format """
+        """ Send the data via Serial to the Arduino in JSON format with markers """
         start_marker = '<'
         end_marker = '>'
 
-        data = (start_marker + data + end_marker).encode()
-        self.ser.write()
+        b_data = (start_marker + data + end_marker).encode()
+        self.ser.write(b_data)
         return
     
     def get_device_resp():
-        
+        """ Get the Serial response from the Arduino """
         return
 
     def get_user_input(self) -> None:
-
+        """ Get the command line arguments for changing Arduino parameters """
+        param = sys.argv[1].strip()
+        value = sys.argv[2].strip()
+        # look up proper way to get optional commandline args?
+        
 
         return
 

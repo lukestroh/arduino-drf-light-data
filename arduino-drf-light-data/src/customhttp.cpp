@@ -11,13 +11,16 @@ const int json_put_mcu_capacity { JSON_OBJECT_SIZE(4) };
 StaticJsonDocument<json_put_mcu_capacity> doc_mcu_update;
 char json_mcu_update_buf[128];
 
-CustomHttp::CustomHttp(Eth& _eth0, RTC_DS3231& _rtc): 
+CustomHttp::CustomHttp(DeviceParams& _device_params, Eth& _eth0, RTC_DS3231& _rtc): 
     /* Initialize class variables*/
+    dps(_device_params),
     eth0(_eth0),
     http(_eth0.ard_client, _eth0.lan_server_ip, _eth0.lan_server_port),
     rtc(_rtc)
-{ 
-
+{
+    // Set the API urls
+    strcpy(lightdata_url, "/api/lightdata");
+    strcpy(mcu_update_base_url, "/api/mcus");
 }
 
 void CustomHttp::construct_lightdata_json(bool pin_status, uint8_t light_pwm) {
@@ -27,7 +30,7 @@ void CustomHttp::construct_lightdata_json(bool pin_status, uint8_t light_pwm) {
     DateTime now_dt = rtc.now();
     now_dt.toString(dt_buffer);
 
-    doc_lightdata["light_name"] = DEVICE_ID; // fix this, it isn't light, but MCU name here..
+    doc_lightdata["light_name"] = dps.DEVICE_LIGHTS_IDS[0]; // fix this, it isn't light, but MCU name here..
     doc_lightdata["datetime"] = dt_buffer;
     doc_lightdata["light_status"] = pin_status;
     doc_lightdata["light_pwm"] = light_pwm;
@@ -35,7 +38,7 @@ void CustomHttp::construct_lightdata_json(bool pin_status, uint8_t light_pwm) {
 }
 
 void CustomHttp::construct_mcu_json(const char* device_id, const char* ip_address) {
-    doc_mcu_update["mcu_name"] = DEVICE_NAME;
+    doc_mcu_update["mcu_name"] = dps.DEVICE_NAME;
     doc_mcu_update["ip_address"] = eth0.IP;
     doc_mcu_update["room_name"] = 1; // bedroom. Update function for this!
     doc_mcu_update["lights"] = 1; // This needs to be a json object within object for multiple lights. This also needs an update function.
@@ -57,7 +60,7 @@ void CustomHttp::send_http_msg(
     }
     else if (mcu_update) {
         data_buf = json_mcu_update_buf;
-        url = mcu_update_url;
+        url = mcu_update_base_url;
     }
 
     // Token string
@@ -99,7 +102,7 @@ void CustomHttp::send_http_msg(
     // Get HTTP Response if connected via Serial.
 #if SERIAL_DEBUG
     uint16_t http_status_code = http.responseStatusCode();
-    String resp = http.responseBody();
+    String resp = http.responseBody(); // Can we make this a char array?
     Serial.print(F("Status code: "));
     Serial.println(http_status_code);
     Serial.print(F("Response: "));

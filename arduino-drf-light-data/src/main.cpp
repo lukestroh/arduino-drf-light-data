@@ -6,13 +6,17 @@
 #define LED 0
 #endif // LED
 
+#include "device_params.h"
 #include "EthTCP.h"
 #include "config.h"
 #include "customhttp.h"
 #include "customswitch.h"
 #include <Arduino.h>
 #include <RTClib.h>
-#include <Wire.h>
+// #include <Wire.h>
+
+// Device parameters
+DeviceParams dps;
 
 // Switches
 uint8_t switch_pin0 { 2 };
@@ -30,10 +34,10 @@ RTC_DS3231 rtc;
 Eth eth0;
 
 // HTTP
-CustomHttp custom_http(eth0, rtc);
+CustomHttp custom_http(dps, eth0, rtc);
 
 // Config
-ArduinoConfig conf(eth0, rtc);
+ArduinoConfig conf(dps, eth0, rtc);
 
 /****************************************************************
  * Main
@@ -71,7 +75,7 @@ void loop() {
 
         // Send data to DB
         custom_http.construct_lightdata_json(pin_status, pwm_light0);
-        custom_http.send_http_msg("post", "/api/lightdata", true, false);
+        custom_http.send_http_msg("post", true, false);
     }
 
     // Read any new data

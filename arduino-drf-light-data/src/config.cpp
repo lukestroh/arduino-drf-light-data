@@ -1,4 +1,3 @@
-#include "location_params.h"
 #include "config.h"
 #include <ArduinoJson.h>
 #include <RTClib.h>
@@ -7,7 +6,8 @@
 #define SERIAL_DEBUG 1
 #endif // SERIAL_DEBUG
 
-ArduinoConfig::ArduinoConfig(Eth& eth0, RTC_DS3231& ds3231):
+ArduinoConfig::ArduinoConfig(DeviceParams& _device_params, Eth& eth0, RTC_DS3231& ds3231):
+    dps(_device_params),
     client(eth0),
     rtc(ds3231)
 {
@@ -139,6 +139,20 @@ void ArduinoConfig::update_gateway_ip(const char* gateway_ip) {
     client.begin_ethernet();
 }
 
+
+void ArduinoConfig::update_device_location(const char* location) {
+    strcpy(dps.DEVICE_LOCATION, location); // TODO: Double check string gets completely replaced
+}
+
+void ArduinoConfig::update_device_name(const char* device_name) {
+    strcpy(dps.DEVICE_NAME, device_name);
+}
+
+void ArduinoConfig::update_device_id(const char* device_id) {
+    unsigned long id = atoi(device_id);
+    dps.DEVICE_ID = id;
+}
+
 void ArduinoConfig::update_param(const char* key, const char* value) {
     /* Specify which parameter to update */
     if (strcmp(key, "datetime") == 0) {
@@ -151,6 +165,10 @@ void ArduinoConfig::update_param(const char* key, const char* value) {
         update_client_ip(value);
     } else if (strcmp(key, "gateway_ip") == 0) {
         update_gateway_ip(value);
+    } else if (strcmp(key, "device_name") == 0) {
+        update_device_name(value);
+    } else if (strcmp(key, "device_id") == 0) {
+        update_device_id(value);
     } else {
 #if SERIAL_DEBUG
         Serial.println(F("JSON key did not match any configuration parameters"));
@@ -182,12 +200,4 @@ void ArduinoConfig::edit_params(const char* serial_data) {
             update_param(key, jobj[key].as<const char*>());
         }
     }
-}
-
-void ArduinoConfig::update_device_location(const char* location) {
-    
-}
-
-void ArduinoConfig::update_device_name_and_id(const char* device_name, const char* device_id) {
-
 }
